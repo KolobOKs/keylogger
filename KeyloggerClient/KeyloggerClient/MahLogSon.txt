@@ -1,0 +1,6 @@
+
+{WINDOW TITLE}-> C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.exe
+
+{WINDOW TITLE}-> KeyloggerClient (Running) - Microsoft Visual Studio
+
+{WINDOW TITLE}-> C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.exe
