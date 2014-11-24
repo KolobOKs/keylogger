@@ -1,25 +1,25 @@
-﻿Build started 17.11.2014 18:57:28.
-     1>Project "C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\KeyloggerClient\KeyloggerClient.vcxproj" on node 2 (Build target(s)).
+﻿Build started 23.11.2014 22:42:41.
+     1>Project "C:\Users\mrkol_000\Desktop\KeyloggerClient\KeyloggerClient\KeyloggerClient.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\KeyloggerClient.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KeyloggerClient.cpp
          KeyloggerClient.cpp
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(1): warning C4005: '_CRT_SECURE_NO_WARNINGS' : macro redefinition
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(1): warning C4005: '_CRT_SECURE_NO_WARNINGS' : macro redefinition
                  command-line arguments :  see previous definition of '_CRT_SECURE_NO_WARNINGS'
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(1): warning C4603: '_CRT_SECURE_NO_WARNINGS' : macro is not defined or definition is different after precompiled header use
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(1): warning C4603: '_CRT_SECURE_NO_WARNINGS' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
-                 c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(2) : use of precompiled header
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(43): warning C4101: 'teclas' : unreferenced local variable
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(31): warning C4101: 'i' : unreferenced local variable
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(44): warning C4101: 'teclasespeciales' : unreferenced local variable
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(28): warning C4101: 'latest_key' : unreferenced local variable
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(32): warning C4101: 'virt_key' : unreferenced local variable
-     1>c:\users\kirill\documents\visual studio 2013\projects\keyloggerclient\keyloggerclient\keyloggerclient.cpp(47): warning C4101: 'keystate' : unreferenced local variable
+                 c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(2) : use of precompiled header
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(120): warning C4101: 'teclas' : unreferenced local variable
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(106): warning C4101: 'i' : unreferenced local variable
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(121): warning C4101: 'teclasespeciales' : unreferenced local variable
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(107): warning C4101: 'virt_key' : unreferenced local variable
+     1>c:\users\mrkol_000\desktop\keyloggerclient\keyloggerclient\keyloggerclient.cpp(124): warning C4101: 'keystate' : unreferenced local variable
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.lib" /MACHINE:X86 Debug\KeyloggerClient.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mrkol_000\Desktop\KeyloggerClient\Debug\KeyloggerClient.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\mrkol_000\Desktop\KeyloggerClient\Debug\KeyloggerClient.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mrkol_000\Desktop\KeyloggerClient\Debug\KeyloggerClient.lib" /MACHINE:X86 Debug\KeyloggerClient.obj
+         Debug\SocketConnection.obj
          Debug\stdafx.obj
-         KeyloggerClient.vcxproj -> C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\Debug\KeyloggerClient.exe
-     1>Done Building Project "C:\Users\Kirill\Documents\Visual Studio 2013\Projects\KeyloggerClient\KeyloggerClient\KeyloggerClient.vcxproj" (Build target(s)).
+         KeyloggerClient.vcxproj -> C:\Users\mrkol_000\Desktop\KeyloggerClient\Debug\KeyloggerClient.exe
+     1>Done Building Project "C:\Users\mrkol_000\Desktop\KeyloggerClient\KeyloggerClient\KeyloggerClient.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.32
+Time Elapsed 00:00:01.14
