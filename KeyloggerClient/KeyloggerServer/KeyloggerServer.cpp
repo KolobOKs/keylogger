@@ -57,18 +57,29 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 
 		Request[retVal] = '\0';
-		wchar_t * sex = (wchar_t*)((void*)(Request));
-		int ssize=MultiByteToWideChar(CP_ACP, NULL, Request, sizeof(Request), NULL, NULL);
-		wchar_t* test = new wchar_t[ssize];
-		MultiByteToWideChar(CP_ACP, NULL, Request, sizeof(Request), test, ssize);
-		test[retVal*sizeof(wchar_t)] = '\0';
-		wofstream f;
 
-		HANDLE logFile = CreateFile(L"log.txt", FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, 0, NULL);
-		DWORD l = GetLastError();
-		DWORD numb = { 0 };
-		WriteFile(logFile, test, retVal*sizeof(wchar_t), &numb, NULL);
-		CloseHandle(logFile);
+		char* test = new char[7];
+		strncpy(test, Request, 6);
+		test[6] = '\0';
+		if (strcmp(test, "TRNINF") == 0)
+			sendto(ServerSocket, "203", 3, 0, (sockaddr*)&client, clientSize);
+		else
+		{
+
+			wchar_t * sex = (wchar_t*)((void*)(Request));
+			int ssize = MultiByteToWideChar(CP_ACP, NULL, Request, sizeof(Request), NULL, NULL);
+			wchar_t* test = new wchar_t[ssize];
+			MultiByteToWideChar(CP_ACP, NULL, Request, sizeof(Request), test, ssize);
+			//test[retVal*sizeof(wchar_t)] = '\0'; // BULLSHIT
+			wofstream f;
+
+			HANDLE logFile = CreateFile(L"log.txt", FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, 0, NULL);
+			DWORD l = GetLastError();
+			DWORD numb = { 0 };
+			WriteFile(logFile, test, retVal*sizeof(wchar_t), &numb, NULL);
+			CloseHandle(logFile);
+		}
+		
 
 	}
 

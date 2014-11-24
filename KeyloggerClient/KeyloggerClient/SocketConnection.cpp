@@ -5,62 +5,47 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-
+#include "MD5.h"
 using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
 int retVal = 0;
 
 
-
-
-
+WORD ver = MAKEWORD(2, 2);
+WSADATA wsaData;
+LPHOSTENT hostEnt;
+SOCKADDR_IN serverInfo;
+SOCKET ClientSocket;
+static int trnID;
+int serverInfoSize;
 SocketConnection::SocketConnection()
 {
-}
-
-
-SocketConnection::~SocketConnection()
-{
-}
-
-bool SocketConnection::Connect()
-{
-	//I DON'T KNOW
-	WORD ver = MAKEWORD(2, 2);
-
-	//init library for using
-	WSADATA wsaData;
-
-
-	//getting host information corresponding to a host name from a host database
-	LPHOSTENT hostEnt;
 	WSAStartup(ver, (LPWSADATA)&wsaData);
-
 	hostEnt = gethostbyname("localhost");
 	if (!hostEnt)
 	{
 		cout << "Unable to collect gethostbyname\n";
 		WSACleanup();
-		return false;
+		throw 1;
 	}
 
-	//create socket
-	SOCKET ClientSocket = socket(AF_INET, SOCK_DGRAM, 0);
-	if (ClientSocket == SOCKET_ERROR)
-	{
-		cout << "Unable to create socket\n";
-		WSACleanup();
-		return false;
-	}
 
-	//this structure specifies a transport address and port for the AF_INET address family
-	SOCKADDR_IN serverInfo;
 	serverInfo.sin_family = AF_INET; //The address family for the transport address. This member should always be set to AF_INET.
 	serverInfo.sin_port = htons(5898); //A transport protocol port number.
 	serverInfo.sin_addr = *((LPIN_ADDR)*hostEnt->h_addr_list); //An IN_ADDR structure that contains an IPv4 transport address.
 
-	int serverInfoSize = sizeof(serverInfo); // Длина структуры сервера
+	trnID = 0;
+
+	ClientSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	if (ClientSocket == SOCKET_ERROR)
+	{
+		cout << "Unable to create socket\n";
+		WSACleanup();
+		throw 1;
+	}
+
+	serverInfoSize = sizeof(serverInfo); // Длина структуры сервера
 
 	//connect with server
 	retVal = connect(ClientSocket, (LPSOCKADDR)&serverInfo, sizeof(serverInfo));
@@ -68,8 +53,50 @@ bool SocketConnection::Connect()
 	{
 		cout << "Unable to connect\n";
 		WSACleanup();
-		return false;
+		throw 1;
 	}
+}
+
+
+SocketConnection::~SocketConnection()
+{
+	closesocket(ClientSocket);
+	WSACleanup();
+}
+
+void SendToServer(char* bufferToSend)
+{
+
+	retVal = sendto(ClientSocket, bufferToSend, strlen(bufferToSend), 0, (sockaddr *)&serverInfo, serverInfoSize);
+	if (retVal == SOCKET_ERROR)
+	{
+		cout << "Unable to send\n";
+		WSACleanup();
+		throw 1;
+	}
+
+
+
+}
+
+void RecvFromServer(char* bufferToRecv)
+{
+
+	retVal = recvfrom(ClientSocket, bufferToRecv, strlen(bufferToRecv), 0, (sockaddr *)&serverInfo, &serverInfoSize);
+	if (retVal == SOCKET_ERROR)
+	{
+		cout << "Unable to send\n";
+		WSACleanup();
+		throw 1;
+	}
+
+}
+
+bool SocketConnection::Connect()
+{
+
+
+
 
 
 	WIN32_FIND_DATA fd;
@@ -91,45 +118,28 @@ bool SocketConnection::Connect()
 			FILE_ATTRIBUTE_NORMAL,  // normal file
 			NULL);                  // no attr. template
 		//HANDLE Hyu = CreateFile(sourceFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, NULL);
-		wchar_t buff[1000] = { 0 };
+		char buff[1000] = { 0 };
 		DWORD haveRead = 0;
 		ReadFile(Hyu, buff, 1000-1,&haveRead, NULL);
 		CloseHandle(Hyu);
 		buff[haveRead] = '\0';
 		
-		//file.open(sourceFile);
-		//wstring lineToSend, tempLine; 
-		//stringstream ss;
-		//ss << file.rdbuf();
-		//wstring ws = wstring((wchar_t *)ss.str().c_str());
-		////file.close();
+		char* idBuf = new char[3];
+		char* message = new char[150];
+		_itoa(trnID,idBuf,9);
+		strcpy(message, "TRNINF ");
+		strcat(message, idBuf);
+		strcat(message, " 1 ");
+		strcat(message, (md5(buff)).c_str());
+		SendToServer(message);
 
-		//
-		//int ssize = WideCharToMultiByte(CP_UTF8, NULL, buff, (int)haveRead, NULL, NULL, NULL, NULL);
-		//char * t = new char[ssize];
-		//WideCharToMultiByte(CP_UTF8, NULL, buff, (int)haveRead, t, ssize, NULL, NULL);
-		//
-
-
-		//retVal = sendto(ClientSocket, t,ssize, 0, (sockaddr *)&serverInfo, serverInfoSize); // В конец добавили структуру с инфой о сервере и длину этой структуры
-		retVal = sendto(ClientSocket, (char*)((void*)buff), wcslen(buff)*sizeof(wchar_t), 0, (sockaddr *)&serverInfo, serverInfoSize);
-		if (retVal == SOCKET_ERROR)
-		{
-			cout << "Unable to send\n";
-			WSACleanup();
-			return false;
-		}
+		char* recvFromBuf = new char[20];
+		RecvFromServer(recvFromBuf);
+		SendToServer(buff);
 		
 		if (FindNextFile(h, &fd) == FALSE)
 			break;
 	}
-	
 
-
-
-
-	//closing soket
-	closesocket(ClientSocket);
-	WSACleanup();
 	return true;
 }

